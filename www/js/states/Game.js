@@ -25,10 +25,6 @@ BasicGame.Game = function (game) {
 
 };
 
-var FishyHelper = {
-
-};
-
 BasicGame.Game.prototype = {
 
 	create: function () {
