@@ -17,7 +17,8 @@ BasicGame.Preloader.prototype = {
 
 	preload: function () {
 		this.load.image('fishy', 'assets/images/fishy.png');
-		this.load.audio('bg', 'assets/audio/bubbles.mp3');
+		this.load.audio('bubbles', 'assets/audio/bubbles.mp3');        
+		this.game.stage.backgroundColor = "#47acff";
 	},
 
 	create: function () {
@@ -25,7 +26,7 @@ BasicGame.Preloader.prototype = {
 	},
 	update: function () {
 
-		if (this.cache.isSoundDecoded('bg') && this.ready == false) {
+		if (this.cache.isSoundDecoded('bubbles') && this.ready == false) {
 			this.ready = true;
 			this.state.start('Game');
 		}

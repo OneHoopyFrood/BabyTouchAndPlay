@@ -30,17 +30,23 @@ BasicGame.Game.prototype = {
 	create: function () {
         this.game.stage.backgroundColor = "#47acff";
 
-        this.music = this.add.audio('bg');
+        this.music = this.add.audio('bubbles');
         this.music.volume = 0.1;
         this.music.loop = true;
         this.music.play();
 
+        this.numFishies = 20;
+
         // Make fishies!
         this.fishies = [];
-        for(let i = 0; i < 10; i++){
-            let fishy = this.game.add.sprite(this.world.width / 2,this.world.height / 2,'fishy');
+        for(let i = 0; i < this.numFishies; i++){
+            let fishy = this.game.add.sprite(this.world.centerX,this.world.centerY,'fishy');
+            fishy.scale.setTo(0.66);
+            let newX = this.game.rnd.realInRange(0+fishy.width, this.world.width - fishy.width);
+            let newY = this.game.rnd.realInRange(0+fishy.width, this.world.height - fishy.width);
+            fishy.position.setTo(newX, newY);
             fishy.anchor.setTo(0.5,0.5);
-            fishy.angle = Math.random() * 360;
+            fishy.angle = this.game.rnd.realInRange(0, 360);
             this.fishies.push(fishy);
         }
 	},
@@ -55,29 +61,27 @@ BasicGame.Game.prototype = {
         }
 
 		// Move da fishies!
-        let self = this;
-        this.fishies.forEach(function(fishy){
-            let vector = self.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
+        for(let i = 0; i < this.fishies.length; i++){
+            let fishy = this.fishies[i];
+            let vector = this.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
 
-            if(self.target) {
-                fishy.angle = self.getAngle(fishy.position.x, fishy.position.y, self.target[0], self.target[1]);
+            if(this.target) {
+                fishy.angle = this.getAngle(fishy.position.x, fishy.position.y, this.target[0], this.target[1]);
             } else {
                 let index = 0;
-                while(!self.checkBounds(vector[0], vector[1]) && index < 10) 
+                while(!this.checkBounds(vector[0], vector[1], fishy.width/2) && index < 10) 
                 {   
-                    fishy.angle = (fishy.angle + Math.random() * 100) % 360;
-                    vector = self.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
+                    fishy.angle = (fishy.angle + this.game.rnd.realInRange(0, 100)) % 360;
+                    vector = this.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
                     index++;
                 }
-                if (index == 10) {
-                    fishy.position.x = self.world.width / 2;
-                    fishy.position.y = self.world.height / 2;
+                if (!this.checkBounds(fishy.position.x, fishy.position.y, fishy.width/2)) {
+                    fishy.position.setTo(this.world.centerX, this.world.centerY);
                     return;
                 }
             }
-            fishy.position.x = vector[0]; 
-            fishy.position.y = vector[1];
-        });
+            fishy.position.setTo(vector[0], vector[1]);
+        }
 	},
 
 	quitGame: function (pointer) {
@@ -106,8 +110,8 @@ BasicGame.Game.prototype = {
         return theta;
     },
 
-    checkBounds: function (x, y) {
-        return !(x < 40 || y < 50 || x > this.world.width - 40 || y > this.world.height - 50);
+    checkBounds: function (x, y, radius) {
+        return !(x < radius || y < radius || x > this.world.width - radius || y > this.world.height - radius);
     }
 
 };
