@@ -1,0 +1,29 @@
+{
+    "name": "com.beauregardtech.babytouchandplay",
+    "version": "1.0.0",
+    "description": "This is the project created from the template: cordova_template",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "ecosystem:cordova"
+    ],
+    "license": "ISC",
+    "displayName": "BabyTouchAndPlay",
+    "dependencies": {
+        "cordova-android": "^6.2.3",
+        "cordova-browser": "~4.1.0",
+        "cordova-plugin-vibration": "^2.1.5",
+        "cordova-plugin-whitelist": "^1.3.2"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-vibration": {},
+            "cordova-plugin-whitelist": {}
+        },
+        "platforms": [
+            "android",
+            "browser"
+        ]
+    }
+}
