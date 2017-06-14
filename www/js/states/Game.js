@@ -36,58 +36,33 @@ TouchAndPlay.Game.prototype = {
         this.music.loop = true;
         this.music.play();
 
-        this.numFishies = 30;
+        let numFishies = 1;
 
         // Make fishies!
         this.fishies = [];
-        for(let i = 0; i < this.numFishies; i++){
-            let fishy = this.game.add.sprite(this.world.centerX,this.world.centerY,'fishy');
-            fishy.scale.setTo(0.66);
-            let newX = this.game.rnd.realInRange(0+fishy.width, this.world.width - fishy.width);
-            let newY = this.game.rnd.realInRange(0+fishy.width, this.world.height - fishy.width);
-            fishy.position.setTo(newX, newY);
-            fishy.anchor.setTo(0.5,0.5);
-            fishy.angle = this.game.rnd.realInRange(0, 360);
-            this.fishyFlip(fishy);
+        for(let i = 0; i < numFishies; i++){
+            let fishy = new Fishy(this.game);
             this.fishies.push(fishy);
         }
+
+        // this.input.onDown(function(){
+        //     // Add food
+        // });
 	},
 
 	update: function () {
-        delete this.target;
+        delete this.game.fishyTarget;
         if(this.input.activePointer.isDown) {
             // If touches, buzz!
-            navigator.vibrate(5);
+            navigator.vibrate(10);
             // If touches, make target!
-            this.target = [this.input.activePointer.clientX, this.input.activePointer.clientY]
+            this.game.fishyTarget = new Phaser.Point(this.input.activePointer.clientX, this.input.activePointer.clientY);
         }
 
 		// Move da fishies!
         for(let i = 0; i < this.fishies.length; i++){
             let fishy = this.fishies[i];
-            let vector = this.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
-
-            if(this.target) {
-                fishy.angle = this.getAngle(fishy.position.x, fishy.position.y, this.target[0], this.target[1]);
-            } else {
-                let index = 0;
-                while(!this.checkBounds(vector[0], vector[1], fishy.width/2) && index < 10) 
-                {   
-                    fishy.angle = (fishy.angle + this.game.rnd.realInRange(0, 100)) % 360;
-                    vector = this.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
-
-                    if (this.checkBounds(vector[0], vector[1], fishy.width/2)) {
-                        this.fishyFlip(fishy);
-                    }
-                    index++;
-                }
-                if (!this.checkBounds(fishy.position.x, fishy.position.y, fishy.width/2)) {
-                    fishy.position.setTo(this.world.centerX, this.world.centerY);
-                    this.fishyFlip(fishy);
-                    return;
-                }
-            }
-            fishy.position.setTo(vector[0], vector[1]);
+            fishy.doMove();
         }
 	},
 
@@ -101,38 +76,6 @@ TouchAndPlay.Game.prototype = {
 		//	Then let's go back to the main menu.
 		this.state.start('MainMenu');
 
-	},
-
-    getVector: function (xCoord, yCoord, angle, length) {
-        length = typeof length !== 'undefined' ? length : 10;
-        return [length * Math.cos(angle) + xCoord, length * Math.sin(angle) + yCoord]
-    },
-
-    getAngle: function (cx, cy, ex, ey) {
-        var dy = ey - cy;
-        var dx = ex - cx;
-        var theta = Math.atan2(dy, dx); // range (-PI, PI]
-        theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
-        //if (theta < 0) theta = 360 + theta; // range [0, 360)
-        return theta;
-    },
-
-    fishyFlip: function (fishy) {
-         if(Math.abs(fishy.angle) > 90) {
-             // Going rtl
-             if (fishy.scale.y > 0){
-                fishy.scale.y *= -1;
-             }
-         } else {
-            // Going ltr
-            if (fishy.scale.y < 0) {
-                fishy.scale.y *= -1;
-            }
-         }
-    },
-
-    checkBounds: function (x, y, radius) {
-        return !(x < radius || y < radius || x > this.world.width - radius || y > this.world.height - radius);
-    }
+	}
 
 };
