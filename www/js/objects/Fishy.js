@@ -18,7 +18,7 @@ var Fishy = function (game) {
         let vector = this.getVector();
 
         if(this.game.fishyTarget) {
-            this.sprite.angle = this.getAngle(this.game.fishyTarget.x, this.game.fishyTarget.y);
+            this.sprite.rotation = this.game.math.angleBetweenPoints(this.sprite.position, this.game.fishyTarget);
             this.spriteFlip();
         } else {
             // Try ten times to find a new heading
@@ -56,10 +56,6 @@ var Fishy = function (game) {
                 this.sprite.scale.y *= -1;
             }
          }
-    },
-
-    getAngle: function(x, y) {
-        return VectorHelper.getAngle(this.sprite.position.x, this.sprite.position.y, x, y);
     },
 
     getVector: function () {
