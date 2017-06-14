@@ -1,5 +1,5 @@
 
-BasicGame.Preloader = function (game) {
+TouchAndPlay.Preloader = function (game) {
 
 	this.background = null;
 	this.fishy = null;
@@ -8,7 +8,7 @@ BasicGame.Preloader = function (game) {
 
 };
 
-BasicGame.Preloader.prototype = {
+TouchAndPlay.Preloader.prototype = {
 
 	init: function () {
 		this.fishy = null;

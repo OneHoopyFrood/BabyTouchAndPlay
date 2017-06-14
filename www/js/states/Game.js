@@ -1,5 +1,5 @@
 
-BasicGame.Game = function (game) {
+TouchAndPlay.Game = function (game) {
 
 	//	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -25,7 +25,9 @@ BasicGame.Game = function (game) {
 
 };
 
-BasicGame.Game.prototype = {
+
+
+TouchAndPlay.Game.prototype = {
 
 	create: function () {
         this.game.stage.backgroundColor = "#47acff";
