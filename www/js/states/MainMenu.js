@@ -1,10 +1,10 @@
 
-BasicGame.MainMenu = function (game) {
+TouchAndPlay.MainMenu = function (game) {
 	this.bg;
 	this.music = null;
 };
 
-BasicGame.MainMenu.prototype = {
+TouchAndPlay.MainMenu.prototype = {
 	create: function () {
 		var text = this.add.text(this.game.width * 0.5, this.game.height * 0.5, 'Tap to Start!', {
 			font: '42px Arial', fill: '#ffffff', align: 'center'

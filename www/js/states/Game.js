@@ -26,7 +26,6 @@ TouchAndPlay.Game = function (game) {
 };
 
 
-
 TouchAndPlay.Game.prototype = {
 
 	create: function () {
@@ -37,7 +36,7 @@ TouchAndPlay.Game.prototype = {
         this.music.loop = true;
         this.music.play();
 
-        this.numFishies = 20;
+        this.numFishies = 30;
 
         // Make fishies!
         this.fishies = [];
@@ -49,6 +48,7 @@ TouchAndPlay.Game.prototype = {
             fishy.position.setTo(newX, newY);
             fishy.anchor.setTo(0.5,0.5);
             fishy.angle = this.game.rnd.realInRange(0, 360);
+            this.fishyFlip(fishy);
             this.fishies.push(fishy);
         }
 	},
@@ -75,10 +75,15 @@ TouchAndPlay.Game.prototype = {
                 {   
                     fishy.angle = (fishy.angle + this.game.rnd.realInRange(0, 100)) % 360;
                     vector = this.getVector(fishy.position.x, fishy.position.y, fishy.rotation, 2);
+
+                    if (this.checkBounds(vector[0], vector[1], fishy.width/2)) {
+                        this.fishyFlip(fishy);
+                    }
                     index++;
                 }
                 if (!this.checkBounds(fishy.position.x, fishy.position.y, fishy.width/2)) {
                     fishy.position.setTo(this.world.centerX, this.world.centerY);
+                    this.fishyFlip(fishy);
                     return;
                 }
             }
@@ -110,6 +115,20 @@ TouchAndPlay.Game.prototype = {
         theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
         //if (theta < 0) theta = 360 + theta; // range [0, 360)
         return theta;
+    },
+
+    fishyFlip: function (fishy) {
+         if(Math.abs(fishy.angle) > 90) {
+             // Going rtl
+             if (fishy.scale.y > 0){
+                fishy.scale.y *= -1;
+             }
+         } else {
+            // Going ltr
+            if (fishy.scale.y < 0) {
+                fishy.scale.y *= -1;
+            }
+         }
     },
 
     checkBounds: function (x, y, radius) {

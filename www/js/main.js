@@ -7,10 +7,10 @@ game.global = {
 
 //	Add the States your game has.
 //	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
-game.state.add('Boot', BasicGame.Boot);
-game.state.add('Preloader', BasicGame.Preloader);
-game.state.add('MainMenu', BasicGame.MainMenu);
-game.state.add('Game', BasicGame.Game);
+game.state.add('Boot', TouchAndPlay.Boot);
+game.state.add('Preloader', TouchAndPlay.Preloader);
+game.state.add('MainMenu', TouchAndPlay.MainMenu);
+game.state.add('Game', TouchAndPlay.Game);
 
 if(navigator.userAgent.indexOf("Chrome") > -1) {
 	window.onload = function() {
