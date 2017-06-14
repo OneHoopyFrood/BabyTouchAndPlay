@@ -12,6 +12,12 @@ game.state.add('Preloader', BasicGame.Preloader);
 game.state.add('MainMenu', BasicGame.MainMenu);
 game.state.add('Game', BasicGame.Game);
 
+if(navigator.userAgent.indexOf("Chrome") > -1) {
+	window.onload = function() {
+		document.dispatchEvent(new Event("deviceready"));
+	};
+}
+
 function onDeviceReady() {
 	// Now safe to use device APIs    
 	//	Now start the Boot state.
