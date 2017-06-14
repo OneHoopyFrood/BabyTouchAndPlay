@@ -41,11 +41,11 @@ TouchAndPlay.Game.prototype = {
         let numFishies = 20;
 
         // Make fishies!
-        this.fishies = [];
+        this.fishies = game.add.group()
         for(let i = 0; i < numFishies; i++){
             let fishy = new Fishy(this.game);
-            this.fishies.push(fishy);
             game.add.existing(fishy);
+            this.fishies.add(fishy);
         }
 
         // this.input.onDown(function(){
@@ -54,23 +54,10 @@ TouchAndPlay.Game.prototype = {
 	},
 
 	update: function () {
-
-        // game.physics.arcade.collide(this.sprites);
-        delete this.game.fishyTarget;
         if(this.input.activePointer.isDown) {
             // If touches, buzz!
             navigator.vibrate(10);
-            // If touches, make target!
-            this.game.fishyTarget = new Phaser.Point(this.input.activePointer.clientX, this.input.activePointer.clientY);
         }
-
-
-
-		// Move da fishies!
-        // for(let i = 0; i < this.fishies.length; i++){
-        //     let fishy = this.fishies[i];
-        //     fishy.doMove();
-        // }
 	},
 
 	quitGame: function (pointer) {
