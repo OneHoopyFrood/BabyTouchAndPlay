@@ -6,12 +6,23 @@ TouchAndPlay.MainMenu = function (game) {
 
 TouchAndPlay.MainMenu.prototype = {
 	create: function () {
-		var text = this.add.text(this.game.width * 0.5, this.game.height * 0.5, 'Tap to Start!', {
-			font: '42px Arial', fill: '#ffffff', align: 'center'
+		this.drawTitle();
+
+	},
+
+	drawTitle: function () {
+		var text = this.add.text(this.game.width * 0.5, 0, 'How many Fishies do you wish?!', {
+			font: '42px Sniglet', fill: '#ffffff', align: 'center', fontWeight: 'bold'
 		});
 		text.anchor.set(0.5);
-
+		text.wordWrap = true;
+		text.wordWrapWidth = this.game.width * 0.9;
+		text.position.y = (text.height / 2) + this.game.height * 0.1;
 		this.input.onDown.add(this.startGame, this);
+	},
+
+	drawButton: function (x, y) {
+		
 	},
 
 	resize: function (width, height) {
