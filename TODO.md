@@ -7,3 +7,4 @@
 - [x] Held Pointer curiosity
 - [ ] Tap flee (with sound and vibration)
 - [ ] Decorations?
+- [ ] Change "Bounce" to "Tank" behavior. (Slow when approaching a wall, then choose a new direction. Maybe make it wander a bit more)

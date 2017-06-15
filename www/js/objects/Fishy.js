@@ -7,9 +7,9 @@ var Fishy = function (game, fishyScale = 0.66, bounce = false) {
     this.spriteFlip();
 
     game.physics.enable(this);
-    game.physics.arcade.velocityFromRotation(this.rotation, 100, this.body.velocity);
+    this.body.maxSpeed = game.rnd.realInRange(60,140);
+    game.physics.arcade.velocityFromRotation(this.rotation, this.body.maxSpeed, this.body.velocity);
 
-    this.body.maxSpeed = 100;
 
     if (bounce) {
         // Bounce from edges!
@@ -20,17 +20,27 @@ var Fishy = function (game, fishyScale = 0.66, bounce = false) {
         this.position.setTo(newX, newY);
 
         // Faster!
-        game.physics.arcade.velocityFromRotation(this.rotation, 200, this.body.velocity);
+        this.body.maxSpeed = 200;
+        game.physics.arcade.velocityFromRotation(this.rotation, this.body.maxSpeed, this.body.velocity);
         
 
         // Now set up bounce!
         this.body.collideWorldBounds = true;
-        this.body.worldBounce = new Phaser.Point(1,1);
         // Alter rotation and sprite orientation on collision
         this.body.onWorldBounds = new Phaser.Signal();
         this.body.onWorldBounds.add(function (thisFishy, up, down, left, right) {
-            thisFishy.rotation = game.math.angleBetween(0,0,thisFishy.body.velocity.x,thisFishy.body.velocity.y);
-            thisFishy.spriteFlip();
+            // let direction = Array.prototype.slice.call(arguments, 1).indexOf(true);
+            // let bias;
+            // if (direction == 0) {
+            //     bias = new Phaser.Point(0, 1);  // Up
+            // } else if (direction == 1) {
+            //     bias = new Phaser.Point(1, 0);  // Right
+            // } else if (direction == 2) {
+            //     bias = new Phaser.Point(0, -1); // Down
+            // } else if (direction == 3) {
+            //     bias = new Phaser.Point(-1, 0); // Left
+            // }
+            thisFishy.newRndDirection();
         });
     }
 };
@@ -51,9 +61,9 @@ Fishy.prototype.spriteFlip = function () {
     }
 }
 
-Fishy.prototype.newRndDirection = function() {
+Fishy.prototype.newRndDirection = function(bias) {
     this.setRotation(game.math.degToRad(game.rnd.realInRange(0, 360)));
-    game.physics.arcade.velocityFromRotation(this.rotation, 100, this.body.velocity);
+    game.physics.arcade.velocityFromRotation(this.rotation, this.body.maxSpeed, this.body.velocity);
 }
 
 Fishy.prototype.setRotation = function (newRotation) {
