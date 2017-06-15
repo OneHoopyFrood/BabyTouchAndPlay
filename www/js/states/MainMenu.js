@@ -57,8 +57,15 @@ TouchAndPlay.MainMenu.prototype = {
 			} else if (i === 3) {
 				textNum = 100;
 			}
-			let number = this.add.text()
-			let button = this.add.button(game.width * 0.1 + (hSpacing) * (i % 2), 300 + (i < 2 ? 0 : vSpacing), 'menuButton', this.startGame, this, 1,0,1,0);
+			let buttonX = game.width * 0.1 + (hSpacing) * (i % 2);
+			let buttonY = 300 + (i < 2 ? 0 : vSpacing);
+			let button = this.add.button(buttonX, buttonY, 'menuButton', this.startGame, this, 1,0,1,0);
+			let number = this.add.text(buttonX, buttonY, textNum.toString(), {
+				font: '64px Modak', fill: '#ffffff', align: 'center'
+			});
+			number.anchor.set(.5)
+			number.x = button.centerX;
+			number.y = button.centerY;
 			button.fishyNumber = textNum;
 			this.buttonGroup.add(button);
 		}
