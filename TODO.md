@@ -1,5 +1,9 @@
-- [ ] Menu buttons
-- [ ] Boids
-- [ ] Pointer curiosity
-- [ ] Bubbles!
-- [ ] Food
+- [x] Menu buttons
+- [ ] Boids (schooling motion)
+- [ ] Multiple Fishies!
+- [ ] Lockout controls, offer slider
+- [ ] Food adding and feeding behavior
+- [ ] Bubbles! (popable)
+- [ ] Held Pointer curiosity
+- [ ] Tap flee (with sound and vibration)
+- [ ] Decorations?
