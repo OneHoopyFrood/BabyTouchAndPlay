@@ -27,12 +27,14 @@
             padding: 0px;
             margin: 0px;
             background-color: #47acff;
+            font-family: "Modak"; /*For font load*/
         }
     </style>
 </head>
 
 <body>
-    <p style="font-family: 'Modak'; position: absolute; top: -1000px;">Force Font Load</p>
+    <!--Font won't render first time phaser uses it if this isn't here-->
+    <div style="position: absolute;"></div>
 </body>
 
 </html>
