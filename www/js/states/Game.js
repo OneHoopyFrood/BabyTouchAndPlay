@@ -27,6 +27,8 @@
 
     let numFishies = 20;
     let fishyScale = 0.66;
+    let playerHolding = false;
+
     TouchAndPlay.Game.prototype = {
 
         init: function(passNumFishies) {
@@ -51,7 +53,7 @@
 
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            // BUBBLES!!!
+            // ER MEH GERSH! BURBLES!!!
             // for(let i = 0; i < 15; ) {
             //     let bubble = new Bubble(game);
             //     game.add.existing(bubble);
@@ -64,17 +66,51 @@
                 game.add.existing(fishy);
                 this.fishies.add(fishy);
             }
-            
 
-            // this.input.onDown(function(){
-            //     // Add food
-            // });
+            this.input.onTap.add(function(e){
+                // Buzz for tap!
+                navigator.vibrate(10);
+
+                // Scare fishies
+            });
+
+            this.input.onHold.add(function(e){
+                playerHolding = true;
+            });
         },
 
         update: function () {
-            if(this.input.activePointer.isDown) {
-                // If touches, buzz!
-                navigator.vibrate(10);
+            if(playerHolding) {
+                // Make local fishies curious
+                this.fishies.forEach(function(fishy){
+                    let distance = fishy.position.distance(game.input.activePointer.position) 
+                    if (distance < (((1 - numFishies / 100) || 0.25) * 200)){
+                        if (distance <= fishy.width) {
+                            fishy.body.drag.set(fishy.body.speed * 5);
+                            fishy.setRotation(fishy.position.angle(game.input.activePointer.position));
+                        } else {
+                            fishy.setRotation(game.physics.arcade.moveToPointer(fishy, fishy.body.maxSpeed, game.input.activePointer, 1000));
+                        }
+                        fishy.curious = true;
+                    } else if (fishy.curious) {
+                        fishy.body.drag.set(0);
+                        fishy.curious = false;
+                        fishy.newRndDirection();
+                    }
+                }, this);
+
+                if(!this.input.activePointer.isDown) {
+                    playerHolding = false;
+                    
+                    // Reset curious fishies
+                    this.fishies.forEach(function(fishy){
+                    if (fishy.curious){
+                        fishy.body.drag.set(0);
+                        fishy.curious = false;
+                        fishy.newRndDirection();
+                    }
+                }, this);
+                }
             }
         },
 

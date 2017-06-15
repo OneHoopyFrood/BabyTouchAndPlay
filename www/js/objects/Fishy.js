@@ -9,6 +9,8 @@ var Fishy = function (game, fishyScale = 0.66, bounce = false) {
     game.physics.enable(this);
     game.physics.arcade.velocityFromRotation(this.rotation, 100, this.body.velocity);
 
+    this.body.maxSpeed = 100;
+
     if (bounce) {
         // Bounce from edges!
 
@@ -47,6 +49,16 @@ Fishy.prototype.spriteFlip = function () {
             this.scale.y *= -1;
         }
     }
+}
+
+Fishy.prototype.newRndDirection = function() {
+    this.setRotation(game.math.degToRad(game.rnd.realInRange(0, 360)));
+    game.physics.arcade.velocityFromRotation(this.rotation, 100, this.body.velocity);
+}
+
+Fishy.prototype.setRotation = function (newRotation) {
+    this.rotation = newRotation;
+    this.spriteFlip();
 }
 
 Fishy.prototype.update = function () {

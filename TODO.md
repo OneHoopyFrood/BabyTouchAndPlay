@@ -4,6 +4,6 @@
 - [ ] Lockout controls, offer slider
 - [ ] Food adding and feeding behavior
 - [ ] Bubbles! (popable)
-- [ ] Held Pointer curiosity
+- [x] Held Pointer curiosity
 - [ ] Tap flee (with sound and vibration)
 - [ ] Decorations?
