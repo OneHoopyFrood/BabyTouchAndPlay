@@ -73,7 +73,7 @@
 
             this.input.onTap.add(function(e){
                 // Buzz for tap!
-                navigator.vibrate(10);
+                navigator.vibrate(100);
 
                 // Scare fishies
             });
