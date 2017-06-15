@@ -7,6 +7,7 @@ TouchAndPlay.MainMenu = function (game) {
 TouchAndPlay.MainMenu.prototype = {
 	create: function () {
 		this.drawTitle();
+		this.drawButtons();
 	},
 
 	drawTitle: function () {
@@ -17,11 +18,50 @@ TouchAndPlay.MainMenu.prototype = {
 		text.wordWrap = true;
 		text.wordWrapWidth = this.game.width * 0.9;
 		text.position.y = (text.height / 2) + 40;
-		this.input.onDown.add(this.startGame, this);
+		// this.input.onDown.add(this.startGame, this);
 	},
 
-	drawButton: function (x, y) {
+	drawButtons: function (x, y, number) {
+		let buttonMargin = 20;
+		let buttonBorder = 8;
+		let buttonWidth = (game.width * 0.9) / 2 - (buttonMargin + buttonBorder * 2);
+		let buttonHeight = 100;
+
+		var graphics = this.add.graphics();
+		graphics.lineStyle(buttonBorder, 0xFFFFFF, 1);
+
+    	// Base State
+		graphics.beginFill(0x2577C1, 1);
+		graphics.drawRoundedRect(0, 0, buttonWidth, buttonHeight, 9);
+    	graphics.endFill();
 		
+		// Over State
+    	graphics.beginFill(0x2D8FE5, 1);
+		graphics.drawRoundedRect(buttonWidth+buttonBorder, 0, buttonWidth, buttonHeight, 9);
+    	graphics.endFill();
+		let texture = graphics.generateTexture();
+		graphics.destroy();
+
+		game.cache.addSpriteSheet('menuButton', null, texture.baseTexture.source, buttonWidth + buttonBorder, buttonHeight+buttonBorder, 2, 0, 0);
+
+		// Draw the group
+		this.buttonGroup = game.add.group();
+		let hSpacing = buttonWidth + buttonMargin + buttonBorder;
+		let vSpacing = buttonHeight+buttonMargin+buttonBorder;
+		for(let i = 0; i < 4; i++) {
+			let textNum = 1;
+			if (i === 1) {
+				textNum = 20;
+			} else if (i === 2) {
+				textNum = 50;
+			} else if (i === 3) {
+				textNum = 100;
+			}
+			let number = this.add.text()
+			let button = this.add.button(game.width * 0.1 + (hSpacing) * (i % 2), 300 + (i < 2 ? 0 : vSpacing), 'menuButton', this.startGame, this, 1,0,1,0);
+			button.fishyNumber = textNum;
+			this.buttonGroup.add(button);
+		}
 	},
 
 	resize: function (width, height) {
@@ -33,8 +73,8 @@ TouchAndPlay.MainMenu.prototype = {
 		this.bg.height = height;
 	},
 
-	startGame: function () {
-		this.state.start("Game");
+	startGame: function (e) {
+		this.state.start("Game", true, false, e.fishyNumber);
 	}
 
 };

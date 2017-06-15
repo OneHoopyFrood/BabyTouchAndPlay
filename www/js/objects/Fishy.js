@@ -1,11 +1,7 @@
-var Fishy = function (game) {
+var Fishy = function (game, fishyScale = 0.66, bounce = false) {
     Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, 'fishy');
 
-    // let newX = game.rnd.realInRange(this.width, game.world.width - this.width);
-    // let newY = game.rnd.realInRange(this.width, game.world.height - this.width);
-    // this.position.setTo(newX, newY);
-    
-    this.scale.setTo(0.66);
+    this.scale.setTo(fishyScale);
     this.anchor.setTo(0.5);
     this.angle = game.rnd.realInRange(0, 360);
     this.spriteFlip();
@@ -13,15 +9,28 @@ var Fishy = function (game) {
     game.physics.enable(this);
     game.physics.arcade.velocityFromRotation(this.rotation, 100, this.body.velocity);
 
-    // Bounce from edges
-    // this.body.collideWorldBounds = true;
-    // this.body.worldBounce = new Phaser.Point(1,1);
-    // // Alter rotation and sprite orientation on collision
-    // this.body.onWorldBounds = new Phaser.Signal();
-    // this.body.onWorldBounds.add(function (thisFishy, up, down, left, right) {
-    //     thisFishy.rotation = game.math.angleBetween(0,0,thisFishy.body.velocity.x,thisFishy.body.velocity.y);
-    //     thisFishy.spriteFlip();
-    // });
+    if (bounce) {
+        // Bounce from edges!
+
+        // Make sure we're in bounds to start
+        let newX = game.rnd.realInRange(this.width, game.world.width - this.width);
+        let newY = game.rnd.realInRange(this.width, game.world.height - this.width);
+        this.position.setTo(newX, newY);
+
+        // Faster!
+        game.physics.arcade.velocityFromRotation(this.rotation, 200, this.body.velocity);
+        
+
+        // Now set up bounce!
+        this.body.collideWorldBounds = true;
+        this.body.worldBounce = new Phaser.Point(1,1);
+        // Alter rotation and sprite orientation on collision
+        this.body.onWorldBounds = new Phaser.Signal();
+        this.body.onWorldBounds.add(function (thisFishy, up, down, left, right) {
+            thisFishy.rotation = game.math.angleBetween(0,0,thisFishy.body.velocity.x,thisFishy.body.velocity.y);
+            thisFishy.spriteFlip();
+        });
+    }
 };
 Fishy.prototype = Object.create(Phaser.Sprite.prototype);
 Fishy.prototype.constructor = Fishy;
@@ -41,7 +50,9 @@ Fishy.prototype.spriteFlip = function () {
 }
 
 Fishy.prototype.update = function () {
-    screenWrap(this);
+    if (!this.body.collideWorldBounds) {
+        screenWrap(this);
+    }
 }
 
 function screenWrap(sprite) {
