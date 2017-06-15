@@ -12,11 +12,18 @@ game.state.add('Preloader', TouchAndPlay.Preloader);
 game.state.add('MainMenu', TouchAndPlay.MainMenu);
 game.state.add('Game', TouchAndPlay.Game);
 
-if(navigator.userAgent.indexOf("Chrome") > -1) {
-	window.onload = function() {
-		document.dispatchEvent(new Event("deviceready"));
-	};
-}
+Phaser.Device.onInitialized.add(function() {
+	if(Phaser.Device.desktop || Phaser.Device.chrome) {
+		window.onload = function() {
+			document.dispatchEvent(new Event("deviceready"));
+		};
+		document.addEventListener("keydown", function(e) {
+			if(e.keyCode == Phaser.Keyboard.BACKSPACE) {
+				document.dispatchEvent(new Event("backbutton"));
+			}
+		});
+	}
+});
 
 function onDeviceReady() {
 	// Now safe to use device APIs    
