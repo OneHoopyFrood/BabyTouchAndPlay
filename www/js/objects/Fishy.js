@@ -1,7 +1,12 @@
 var Fishy = function (game, fishyScale = 0.66, bounce = false) {
-    Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, 'fishy');
 
-    this.scale.setTo(fishyScale);
+    if (fishyScale === 'big') {
+        Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, 'fishy-big');
+    } else {
+        Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, 'fishy');
+        this.scale.setTo(fishyScale);
+    }
+    
     this.anchor.setTo(0.5);
     this.angle = game.rnd.realInRange(0, 360);
     this.spriteFlip();

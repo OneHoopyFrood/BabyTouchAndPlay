@@ -26,7 +26,7 @@
     };
 
     let numFishies = 20;
-    let fishyScale = 0.66;
+    let fishyScale;
     let playerHolding = false;
 
     TouchAndPlay.Game.prototype = {
@@ -34,10 +34,14 @@
         init: function(passNumFishies) {
             numFishies = passNumFishies;
 			if (numFishies === 1) {
-				fishyScale = 1;
+				fishyScale = 'big';
 			} else if (numFishies <= 10){
                 fishyScale = 0.75;
+            } else {
+                fishyScale = 0.66;
             }
+
+            document.addEventListener("backbutton", this.quitGame.bind(this), false);
         },
 
         create: function () {
@@ -85,7 +89,7 @@
                 this.fishies.forEach(function(fishy){
                     let distance = fishy.position.distance(game.input.activePointer.position) 
                     if (distance < (((1 - numFishies / 100) || 0.25) * 200)){
-                        if (distance <= fishy.width) {
+                        if (distance <= fishy.width/2 + 50) {
                             fishy.body.drag.set(fishy.body.speed * 5);
                             fishy.setRotation(fishy.position.angle(game.input.activePointer.position));
                         } else {
@@ -104,19 +108,20 @@
                     
                     // Reset curious fishies
                     this.fishies.forEach(function(fishy){
-                    if (fishy.curious){
-                        fishy.body.drag.set(0);
-                        fishy.curious = false;
-                        fishy.newRndDirection();
-                    }
-                }, this);
+                        if (fishy.curious){
+                            fishy.body.drag.set(0);
+                            fishy.curious = false;
+                            fishy.newRndDirection();
+                        }
+                    }, this);
                 }
             }
         },
 
-        quitGame: function (pointer) {
-            //	Stop music, delete sprites, purge caches, free resources, all that good stuff.
+        quitGame: function (e) {
+            e.preventDefault(); 
 
+            //	Stop music, delete sprites, purge caches, free resources, all that good stuff.
             this.music.stop();
             game.world.removeAll();
 
