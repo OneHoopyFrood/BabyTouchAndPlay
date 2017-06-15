@@ -11,7 +11,7 @@ TouchAndPlay.Preloader.prototype = {
 
 	preload: function () {
 		// Images
-		this.load.image('fishy', 'assets/images/fishy.png');
+		this.load.image('fishy', 'assets/images/fishy-80.png');
 
 		// Sounds
 		this.load.audio('bubbles', 'assets/audio/bubbles.mp3');
