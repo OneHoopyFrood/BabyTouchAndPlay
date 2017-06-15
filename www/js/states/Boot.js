@@ -19,7 +19,7 @@ TouchAndPlay.Boot.prototype = {
     },
 
     preload: function () {
-        this.load.image('fishy', 'assets/images/fishy.png');       
+             
     },
 
     create: function () {
