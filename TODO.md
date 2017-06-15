@@ -1,6 +1,6 @@
 - [x] Menu buttons
 - [ ] Boids (schooling motion)
-- [ ] Multiple Fishies!
+- [ ] Moar Fishies! (New skins/colors)
 - [ ] Lockout controls, offer slider
 - [ ] Food adding and feeding behavior
 - [ ] Bubbles! (popable)
