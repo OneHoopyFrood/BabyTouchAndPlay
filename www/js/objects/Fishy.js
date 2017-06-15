@@ -1,9 +1,10 @@
 var Fishy = function (game) {
     Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, 'fishy');
 
-    let newX = game.rnd.realInRange(this.width, game.world.width - this.width);
-    let newY = game.rnd.realInRange(this.width, game.world.height - this.width);
-    this.position.setTo(newX, newY);
+    // let newX = game.rnd.realInRange(this.width, game.world.width - this.width);
+    // let newY = game.rnd.realInRange(this.width, game.world.height - this.width);
+    // this.position.setTo(newX, newY);
+    
     this.scale.setTo(0.66);
     this.anchor.setTo(0.5);
     this.angle = game.rnd.realInRange(0, 360);
