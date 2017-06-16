@@ -89,44 +89,50 @@ Fishy.prototype.makeCurious = function (target, noticeDistance = 50, noticeChanc
 
     let distance = this.position.distance(target);
     if (distance < noticeDistance){
-        if (distance <= this.width/2 + 50) {
+        if (distance <= this.width/2 + 40) {
             this.body.drag.set(this.body.speed * 5);
             this.setRotation(this.position.angle(target));
         } else {
-            let direction = new Phaser.Point(target.x, target.y);
-            // now we subtract the current boid position
-            direction.subtract(this.x, this.y);
-            // then we normalize it. A normalized vector has its length is 1, but it retains the same direction
-            direction.normalize();
-            // time to set magnitude (length) to boid speed
-            direction.setMagnitude(this.speed);
-            // now we subtract the current boid velocity
-            direction.subtract(this.body.velocity.x, this.body.velocity.y);
-            // normalizing again
-            direction.normalize();
-            // finally we set the magnitude to boid force, which should be WAY lower than its velocity
-            direction.setMagnitude(20); 
-            // Now we add boid direction to current boid velocity
-            this.body.velocity.add(direction.x, direction.y);
-            // we normalize the velocity
-            this.body.velocity.normalize();
-            // we set the magnitue to boid speed
-            this.body.velocity.setMagnitude(this.speed);
-            this.setRotation(this.position.angle(new Phaser.Point(this.x + this.body.velocity.x, this.y + this.body.velocity.y)));
-
-
-            // this.setRotation(game.physics.arcade.moveToObject(this, point, this.speed, 1000));
+            this.streerTowardsPoint(target);
         }
         this.curious = true;
     } else if (this.curious) {
-        this.getDistracted();
+        this.loseInterest();
     }
 }
 
-Fishy.prototype.getDistracted = function () {
+Fishy.prototype.loseInterest = function () {
     this.body.drag.set(0);
     this.curious = false;
     this.newRndDirection();
+}
+
+Fishy.prototype.streerTowardsPoint = function(target) {
+    this.body.drag.set(0);
+    game.physics.arcade.velocityFromRotation(this.rotation, this.speed, this.body.velocity);
+    if (this.rotation - this.position.angle(target) > .1) { // Avoid shake
+        // Source: http://www.emanueleferonato.com/2016/02/01/understanding-steering-behavior-html5-example-using-phaser/
+        let direction = new Phaser.Point(target.x, target.y);
+        // now we subtract the current boid position
+        direction.subtract(this.x, this.y);
+        // then we normalize it. A normalized vector has its length is 1, but it retains the same direction
+        direction.normalize();
+        // time to set magnitude (length) to boid speed
+        direction.setMagnitude(this.speed);
+        // now we subtract the current boid velocity
+        direction.subtract(this.body.velocity.x, this.body.velocity.y);
+        // normalizing again
+        direction.normalize();
+        // finally we set the magnitude to boid force, which should be WAY lower than its velocity
+        direction.setMagnitude(15); 
+        // Now we add boid direction to current boid velocity
+        this.body.velocity.add(direction.x, direction.y);
+        // we normalize the velocity
+        this.body.velocity.normalize();
+        // we set the magnitue to boid speed
+        this.body.velocity.setMagnitude(this.speed);
+        this.setRotation(this.position.angle(new Phaser.Point(this.x + this.body.velocity.x, this.y + this.body.velocity.y)));
+    }
 }
 
 function screenWrap(sprite) {

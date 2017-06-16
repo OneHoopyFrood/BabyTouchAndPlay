@@ -28,6 +28,7 @@
     let numFishies = 20;
     let fishyScale;
     let playerHolding = false;
+    let noticeDistance;
 
     TouchAndPlay.Game.prototype = {
 
@@ -40,6 +41,8 @@
             } else {
                 fishyScale = 0.66;
             }
+
+            noticeDistance = 5000 / numFishies;
 
             document.addEventListener("backbutton", this.quitGame.bind(this), false);
         },
@@ -87,7 +90,6 @@
             if(playerHolding) {
                 // Make local fishies curious
                 this.fishies.forEach(function(fishy){
-                    let noticeDistance = (((1 - numFishies / 100) || 0.25) * 200);
                     fishy.makeCurious(game.input.activePointer.position, noticeDistance);
                 }, this);
 
@@ -96,7 +98,7 @@
                     // Reset curious fishies
                     this.fishies.forEach(function(fishy){
                         if (fishy.curious){
-                            fishy.getDistracted();
+                            fishy.loseInterest();
                         }
                     }, this);
                 }
