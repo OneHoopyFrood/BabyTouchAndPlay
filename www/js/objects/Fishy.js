@@ -110,7 +110,7 @@ Fishy.prototype.loseInterest = function () {
 Fishy.prototype.streerTowardsPoint = function(target) {
     this.body.drag.set(0);
     game.physics.arcade.velocityFromRotation(this.rotation, this.speed, this.body.velocity);
-    if (this.rotation - this.position.angle(target) > .1) { // Avoid shake
+    if (this.rotation - this.position.angle(target) > .02) { // Avoid shake
         // Source: http://www.emanueleferonato.com/2016/02/01/understanding-steering-behavior-html5-example-using-phaser/
         let direction = new Phaser.Point(target.x, target.y);
         // now we subtract the current boid position
