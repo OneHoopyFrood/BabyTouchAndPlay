@@ -78,7 +78,7 @@
                 // Scare fishies
             });
 
-            this.input.onHold.add(function(e){
+            this.input.onDown.add(function(e){
                 playerHolding = true;
             });
         },
@@ -87,31 +87,16 @@
             if(playerHolding) {
                 // Make local fishies curious
                 this.fishies.forEach(function(fishy){
-                    let distance = fishy.position.distance(game.input.activePointer.position) 
-                    if (distance < (((1 - numFishies / 100) || 0.25) * 200)){
-                        if (distance <= fishy.width/2 + 50) {
-                            fishy.body.drag.set(fishy.body.speed * 5);
-                            fishy.setRotation(fishy.position.angle(game.input.activePointer.position));
-                        } else {
-                            fishy.setRotation(game.physics.arcade.moveToPointer(fishy, fishy.body.maxSpeed, game.input.activePointer, 1000));
-                        }
-                        fishy.curious = true;
-                    } else if (fishy.curious) {
-                        fishy.body.drag.set(0);
-                        fishy.curious = false;
-                        fishy.newRndDirection();
-                    }
+                    let noticeDistance = (((1 - numFishies / 100) || 0.25) * 200);
+                    fishy.makeCurious(game.input.activePointer.position, noticeDistance);
                 }, this);
 
                 if(!this.input.activePointer.isDown) {
                     playerHolding = false;
-                    
                     // Reset curious fishies
                     this.fishies.forEach(function(fishy){
                         if (fishy.curious){
-                            fishy.body.drag.set(0);
-                            fishy.curious = false;
-                            fishy.newRndDirection();
+                            fishy.getDistracted();
                         }
                     }, this);
                 }

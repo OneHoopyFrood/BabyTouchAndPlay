@@ -59,8 +59,8 @@ TouchAndPlay.MainMenu.prototype = {
 			}
 			let buttonX = game.width * 0.1 + (hSpacing) * (i % 2);
 			let buttonY = 300 + (i < 2 ? 0 : vSpacing);
-			let button = this.add.button(buttonX, buttonY, 'menuButton', this.startGame, this, 1,0,1,0);
-			let number = this.add.text(buttonX, buttonY, textNum.toString(), {
+			let button = game.add.button(buttonX, buttonY, 'menuButton', this.startGame, this, 1,0,1,0);
+			let number = game.add.text(buttonX, buttonY, textNum.toString(), {
 				font: '64px Modak', fill: '#ffffff', align: 'center'
 			});
 			number.anchor.set(.5)
@@ -69,15 +69,6 @@ TouchAndPlay.MainMenu.prototype = {
 			button.fishyNumber = textNum;
 			this.buttonGroup.add(button);
 		}
-	},
-
-	resize: function (width, height) {
-
-		//	If the game container is resized this function will be called automatically.
-		//	You can use it to align sprites that should be fixed in place and other responsive display things.
-
-		this.bg.width = width;
-		this.bg.height = height;
 	},
 
 	startGame: function (e) {
